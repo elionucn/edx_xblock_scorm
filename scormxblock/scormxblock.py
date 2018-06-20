@@ -68,7 +68,9 @@ class ScormXBlock(XBlock):
         scope=Scope.user_state,
         default=0
     )
-    weight = Float(
+    weight = Integer(
+        display_name=_('Weight'),
+        help=_('SCORM block\'s problem weight in the course, in points.'),
         default=1,
         scope=Scope.settings
     )
@@ -133,6 +135,7 @@ class ScormXBlock(XBlock):
         self.width = request.params['width']
         self.height = request.params['height']
         self.has_score = request.params['has_score']
+        self.weight = request.params['weight']
         self.icon_class = 'problem' if self.has_score == 'True' else 'video'
 
         if hasattr(request.params['file'], 'file'):
@@ -195,7 +198,7 @@ class ScormXBlock(XBlock):
                 self.publish_grade()
                 context.update({"lesson_score": self.lesson_score})
         elif name in ['cmi.core.score.raw', 'cmi.score.raw'] and self.has_score:
-            self.lesson_score = int(data.get('value', 0))/100.0
+            self.lesson_score = int(data.get('value', 0))
             self.publish_grade()
             context.update({"lesson_score": self.lesson_score})
         else:
@@ -219,7 +222,7 @@ class ScormXBlock(XBlock):
                 self,
                 'grade',
                 {
-                    'value': self.lesson_score,
+                    'value': (float(self.lesson_score)/float(100)) * self.weight,
                     'max_value': self.weight,
                 })
 
@@ -234,6 +237,7 @@ class ScormXBlock(XBlock):
             'field_display_name': self.fields['display_name'],
             'field_scorm_file': self.fields['scorm_file'],
             'field_has_score': self.fields['has_score'],
+            'field_weight': self.fields['weight'],
             'field_width': self.fields['width'],
             'field_height': self.fields['height'],
             'scorm_xblock': self
