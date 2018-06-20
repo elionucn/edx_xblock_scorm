@@ -35,6 +35,10 @@ msgstr "Completado"
 msgid "incomplete"
 msgstr "Incompleto"
 
+#: scormxblock.py:73
+msgid "SCORM block's problem weight in the course, in points."
+msgstr "Peso de la actividad SCORM en el curso, en puntos."
+
 #: scormxblock.py:77
 msgid "Select False if this component will not receive a numerical score from the Scorm"
 msgstr "Seleccione Falso si este componente no recibirá una puntuación numérica del Scorm"
