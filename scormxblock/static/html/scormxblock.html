@@ -2,7 +2,14 @@
 
 <div class="scormxblock_block">
     {% if scorm_xblock.has_score %}
-    <p>(<span class="lesson_score">{{ scorm_xblock.lesson_score }}</span>/{{ scorm_xblock.weight }} {% trans "points" %}) <span class="completion_status">{% trans completion_status %}</span></p>
+    <p>{{ scorm_xblock.weight }}
+        {% if scorm_xblock.weight == 1 %}
+            {% trans "point possible" %}
+        {% else %}
+            {% trans "points possible" %}
+        {% endif %}
+        (<span class="completion_status">{% trans completion_status %})</span>
+    </p>
     {% endif %}
     {% if scorm_file_path %}
     <iframe class="scorm_object"
